@@ -21,6 +21,16 @@ module.exports = function(opts) {
 		throw 'Must provide \'callback\' parameter to constructor of work queue';
 	}
 
+	/// Public API
+	this.push = push;
+	this.notEmpty = notEmpty;
+	this.empty = empty;
+	this.clear = clear;
+
+	/// Private stuff
+
+	var self = this;
+
 	// The work queue!
 	var queue = [];
 
@@ -30,12 +40,6 @@ module.exports = function(opts) {
 	// Timer that polls the queue
 	var timer = undefined;
 
-	return {
-		push: push,
-		empty: empty,
-		notEmpty: notEmpty
-	};
-
 	function push() {
 		var item = Array.prototype.slice.call(arguments);
 		queue.push(item);
@@ -43,11 +47,17 @@ module.exports = function(opts) {
 	}
 
 	function notEmpty() {
-		return queue.length > 0;
+		return !self.empty();
 	}
 
 	function empty() {
-		return queue.length === 0;
+		return queue.length === 0 && processing === 0;
+	}
+
+	function clear() {
+		queue = [];
+		processing = 0;
+		clearTimer();
 	}
 
 	function onStep() {
@@ -82,8 +92,10 @@ module.exports = function(opts) {
 	}
 
 	function clearTimer() {
-		clearInterval(timer);
-		timer = undefined;
+		if (timer) {
+			clearInterval(timer);
+			timer = undefined;
+		}
 	}
 
 };
