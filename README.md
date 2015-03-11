@@ -3,17 +3,21 @@ A light-weight in-memory NodeJs queue for throttling asynchronous work items tha
 
 ## Usage
 ```js
+var http = require(...);
+
 var WorkQueue = require('work-queue');
+
+var processHttpRequestItem = function(method, url) {
+  return http.request(method, url) // Returns a Q-like response
+      .then(function(resp) {
+        console.log('response = ', resp.text);
+      });
+};
 
 // Create the queue
 var requestQueue = new WorkQueue({
   concurrency: 2,
-  callback: function(method, url) {
-    return http.request(method, url) // Returns a Q-like response
-      .then(function(resp) {
-        console.log('response = ', resp.text);
-      });
-  }
+  callback: processHttpRequestItem
 });
 
 // Add some work items
@@ -21,7 +25,7 @@ for (var i = 0; i < 20; i += 1) {
   requestQueue.push('GET', 'https://github.com/MikeyBurkman/work-queue');
 }
 
-// Keep checking, and exit when the queue is empty
+// Keep checking, and exit when the queue is empty.
 setInterval(function() {
   if (requestQueue.empty()) {
     console.log('Complete!');
