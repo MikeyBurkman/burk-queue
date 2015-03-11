@@ -1,5 +1,5 @@
 # work-queue
-A light-weight in-memory NodeJs queue for throttling work items that implement [Q-like](https://www.npmjs.com/package/q) promise
+A light-weight in-memory NodeJs queue for throttling asynchronous work items that implement [Q-like](https://www.npmjs.com/package/q) promise
 
 ## Usage
 ```js
