@@ -44,6 +44,7 @@ setInterval(function() {
 `callback`: Required. The function to be executed when a work item can be processed.
 - The callback function is expected to return a [Q-like](https://www.npmjs.com/package/q) promise in order to throttle correctly.
 - If the callback function returns something else, it is assumed to be finished as soon as the function returns.
+- Any arguments passed to `push(args)` will be given as arguments to the callback, in the same order.
 
 `concurrency`: Optional. The maximum number of items that can be processed concurrently. Defaults to 1.
 
