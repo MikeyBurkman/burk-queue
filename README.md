@@ -41,13 +41,13 @@ setInterval(function() {
 - The `empty()` returns true if the queue has finished processing all the work given to it.
 
 ## Constructor Options
-`concurrency`: The maximum number of items that can be processed concurrently.
-
-`callback`: The function to be executed when a work item can be processed.
+`callback`: Required. The function to be executed when a work item can be processed.
 - The callback function is expected to return a [Q-like](https://www.npmjs.com/package/q) promise in order to throttle correctly.
 - If the callback function returns something else, it is assumed to be finished as soon as the function returns.
 
-`interval`: When there are items on the queue, the queue will check every `interval` milliseconds to see if it can start processing a new work item.
+`concurrency`: Optional. The maximum number of items that can be processed concurrently. Defaults to 1.
+
+`interval`: Optional. When there are items on the queue, the queue will check every `interval` milliseconds to see if it can start processing a new work item. Defaults to 50ms.
 
 ## API
 `push(args)`: Pushes a work item on to the queue.
