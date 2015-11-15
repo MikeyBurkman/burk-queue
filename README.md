@@ -1,11 +1,11 @@
-# work-queue
-A light-weight in-memory NodeJs queue for throttling asynchronous work items that implement [Q-like](https://www.npmjs.com/package/q) promise
+# burk-queue
+A light-weight in-memory NodeJs queue for throttling asynchronous work items that implement ES6-like promises. (Any promise that implements finally().)
 
 ## Usage
 ```js
 var http = require(...);
 
-var WorkQueue = require('work-queue');
+var BurkQueue = require('burk-queue');
 
 var processHttpRequestItem = function(method, url) {
   return http.request(method, url) // Returns a Q-like response
@@ -15,7 +15,7 @@ var processHttpRequestItem = function(method, url) {
 };
 
 // Create the queue
-var requestQueue = new WorkQueue({
+var requestQueue = new BurkQueue({
   concurrency: 2,
   callback: processHttpRequestItem
 });
