@@ -1,6 +1,6 @@
 {
 	"name": "work-queue",
-	"description": "An in-memory NodeJs queue for throttling work items that implement Q-like promise",
+	"description": "An in-memory NodeJs queue for throttling work items that are promises",
 	"version": "1.0.0",
 	"dependencies": {
 	},

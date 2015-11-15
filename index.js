@@ -3,10 +3,9 @@
 // Work queue that throttles the processing of work items.
 // The maximum number of work items that may be worked concurrently is given by the 'concurrency' option.
 //	The default is 1, meaning that work items are procssed one at a time.
-// The 'callback' option is a function that is expected to return a Q-like promise, so that the work queue
-//	knows when the function is finished, and it can start executing the next time.
-// If the callbak does not return a Q-like promise, then it is assumed to be complete
-//	as soon as the callback returns.
+// The 'callback' option is a function that is expected to return a promise with a finally() method, so that the
+// work queue knows when the function is finished, and it can start executing the next time.
+// If the callbak does not return a promise, then it is assumed to be complete as soon as the callback returns.
 // There is some optimization done, in that the watcher is turned off if the queue is empty.
 
 module.exports = function(opts) {
@@ -14,7 +13,7 @@ module.exports = function(opts) {
 	opts = opts || {};
 
 	var callback = opts.callback;
-	var concurrency = opts.concurrency || 1; 
+	var concurrency = opts.concurrency || 1;
 	var interval = opts.interval || 50; // How often to check, defaults to 50ms
 
 	if (!callback) {
@@ -66,8 +65,8 @@ module.exports = function(opts) {
 			processing += 1;
 
 			var res = callback.apply(undefined, item);
-			if (res && res.fin) {
-				res.fin(onComplete);
+			if (res && res.finally) {
+				res.finally(onComplete);
 			} else {
 				onComplete();
 			}
